@@ -1,0 +1,14 @@
+{
+  "ApiKey": "0Mx9Au4Jr7Xp5Uz2Zc7Zx6Zz1Oe6Qk8Ee7Il4Bh",
+  "AppName": "devbob-aminoapi-dev",
+  "Environment": "Amino",
+  "Instrumentation": [
+    {
+      "Assembly": "StackifyExample4",
+      "Class": "StackifyExample4.Data.StudentRecruiter",
+      "Method": "*",
+      "EnableTrackedFunction": true,
+      "TrackedFunctionName": "Reading Config {{ClassName}}.{{MethodName}}"
+    }
+  ]
+}
