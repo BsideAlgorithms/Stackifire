@@ -8,7 +8,14 @@
       "Class": "StackifyExample4.Data.StudentRecruiter",
       "Method": "*",
       "EnableTrackedFunction": true,
-      "TrackedFunctionName": "Reading Config {{ClassName}}.{{MethodName}}"
+      "TrackedFunctionName": "{{ClassName}}.{{MethodName}}"
+    },
+    {
+      "Assembly": "StackifyExample4",
+      "Class": "*",
+      "Method": "*",
+      "EnableTrackedFunction": true,
+      "TrackedFunctionName": "{{ClassName}}.{{MethodName}}"
     }
   ]
 }
