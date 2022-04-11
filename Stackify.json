@@ -16,6 +16,13 @@
       "Method": "*",
       "EnableTrackedFunction": true,
       "TrackedFunctionName": "{{ClassName}}.{{MethodName}}"
+    },
+    {
+      "Assembly": "Hangfire.Core",
+      "Class": "Hangfire.Server.CoreBackgroundJobPerformer",
+      "Method": "Hangfire.Server.CoreBackgroundJobPerformer.Perform",
+      "EnableTrackedFunction": true,
+      "TrackedFunctionName": "{{ClassName}}.{{MethodName}}"
     }
   ]
 }

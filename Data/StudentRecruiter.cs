@@ -18,9 +18,20 @@ namespace StackifyExample4.Data
       }
 
 
-      public Task RecruitClonesInBackgroundAsync(int? target = 1000)
+      public async Task ClonesDepartmentsAsync(int? target = 1000)
       {
-         return RecruitClonesAsync(target, isBackground: true);
+         for (int i = 0; i < target; i++)
+         {
+            var name = $"Clone-DEP-{Guid.NewGuid()}";
+            var student = new Department
+            {
+               Name = name,
+               StartDate = DateTime.Now,
+               Budget = i * 100,
+            };
+            context.Departments.Add(student);
+            await context.SaveChangesAsync();
+         }
       }
 
       public async Task RecruitClonesAsync(int? target = 1000, bool isBackground = false)
@@ -39,11 +50,9 @@ namespace StackifyExample4.Data
          }
       }
 
-      public Task RemoveClonesInBackgroundAsync() => RemoveClonesAsync();
-
-      public async Task RemoveClonesAsync()
+      public async Task RemoveStudentClonesAsync()
       {
-         var clones = await GetClonesAsync();
+         var clones = await GetStudentClonesAsync();
          foreach (var clone in clones)
          {
             context.Students.Remove(clone);
@@ -52,7 +61,26 @@ namespace StackifyExample4.Data
 
       }
 
-      public async Task<IEnumerable<Student>> GetClonesAsync()
+      public async Task RemoveDepartmentClonesAsync()
+      {
+         var clones = await GetClonedDepartmentsAsync();
+         foreach (var clone in clones)
+         {
+            context.Departments.Remove(clone);
+            await context.SaveChangesAsync();
+         }
+
+      }
+
+      public async Task<IEnumerable<Department>> GetClonedDepartmentsAsync()
+      {
+         var departments = await context.Departments.Where(d => d.Name.StartsWith("Clone-")).ToListAsync();
+         return departments;
+
+      }
+
+
+      public async Task<IEnumerable<Student>> GetStudentClonesAsync()
       {
          var students = await context.Students.Where(s => s.LastName.StartsWith("Clone-")).ToListAsync();
          return students;

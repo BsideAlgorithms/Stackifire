@@ -15,39 +15,57 @@
 </Query>
 
 const string api = "https://devbob-aminoapi-dev.azurewebsites.net";
+//const string api = "https://localhost:44398";
 
 async Task Main()
 {
 
-	//Runs Task in using Hangfire background task and creates 10 student clones
+	//Runs Task in using Hangfire background task and creates 10 department clones
 	await api
-	.AppendPathSegment("api/Recruitments/RecruitClonesWithBackgroundJob")
+	.AppendPathSegment("api/Recruitments/ClonesDepartmentsWithBackgroundJob")
 	.PostJsonAsync(10);
 
 	//Runs without background processing and creates 10 student clones
 	await api
-	.AppendPathSegment("api/Recruitments/RecruitClones")
+	.AppendPathSegment("api/Recruitments/RecruitStudentClones")
 	.PostJsonAsync(10);
-
-	await Task.Delay(TimeSpan.FromSeconds(10));
-	//This will produce 20 students, 10 created from background task and 10 created without background task
-	await DumpClonesAsync();
 	
-	//Removes all Student clones
+	await Task.Delay(TimeSpan.FromSeconds(10));
+	//This will produce 10 students clones and 10 department clones created without background task
+	await DumpStudentClones();
+	await DumpDeparmentClones();
+	
+	//Removes all Student & department clones
 	await api
-	.AppendPathSegment("api/Recruitments/RemoveClonesWithBackgroundJob")
+	.AppendPathSegment("api/Recruitments/RemoveDepartmentClonesWithBackgroundJob")
+	.PostJsonAsync(10);
+
+	await api
+	.AppendPathSegment("api/Recruitments/RemoveStudentClones")
 	.PostJsonAsync(10);
 
 	await Task.Delay(TimeSpan.FromSeconds(10));
-	await DumpClonesAsync();
+	await DumpStudentClones();
+	await DumpDeparmentClones();
 
 }
 
 
-private async Task DumpClonesAsync()
+private async Task DumpStudentClones()
 {
 	var retrieveResponse = await api
-	.AppendPathSegment("api/Recruitments")
+	.AppendPathSegment("api/Recruitments/GetStudentClones")
+	.WithTimeout(TimeSpan.FromMinutes(8))
+	.GetJsonListAsync();
+
+	((object)retrieveResponse).Dump();
+}
+
+
+private async Task DumpDeparmentClones()
+{
+	var retrieveResponse = await api
+	.AppendPathSegment("api/Recruitments/GetClonedDepartments")
 	.WithTimeout(TimeSpan.FromMinutes(8))
 	.GetJsonListAsync();
 

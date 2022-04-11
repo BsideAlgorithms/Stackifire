@@ -38,10 +38,10 @@ namespace StackifyExample4
          // Do not need the logging of all request
          SerilogWebClassic.Configure(cfg => cfg.Disable());
 
+         var logger = Log.Logger.ForContext<LoggerFactory>();
          // Only needed for debugging stackify
-         //StackifyAPILogger.LogEnabled = true;
-         //StackifyAPILogger.OnLogMessage += data => Debug.WriteLine(data);
-
+         StackifyLib.Utils.StackifyAPILogger.LogEnabled = true;
+         StackifyLib.Utils.StackifyAPILogger.OnLogMessage += data => logger.Information($"Stackify Debug: {data}");
          Log.Logger.ForContext<LoggerFactory>().Information("App Restarted");
       }
    }

@@ -82,6 +82,7 @@ namespace StackifyExample4
          app.UseMiddleware<RequestTracerMiddleware>();
          app.ConfigureStackifyLogging(this.Configuration);
          loggerFactory.Init();
+         loggerFactory.Create().ForContext<Startup>().Information("Configuration: {@Configuration}", Configuration);
          app.UseHangfireDashboard(options: new DashboardOptions { IsReadOnlyFunc = (context) => true });
          app.UseMvc();
       }
