@@ -11,49 +11,53 @@ namespace StackifyExample4.Controllers
    [ApiController]
    public class RecruitmentsController : ControllerBase
    {
-      private readonly StudentRecruiter studentRecruiter;
+      private readonly DepartmentRepository departmentRepository;
+      private readonly StudentRepository studentRepository;
       private readonly IBackgroundJobClient backgroundJobClient;
 
-      public RecruitmentsController(StudentRecruiter studentRecruiter, IBackgroundJobClient backgroundJobClient)
+      public RecruitmentsController(DepartmentRepository departmentRepository,
+         StudentRepository studentRepository,
+         IBackgroundJobClient backgroundJobClient)
       {
-         this.studentRecruiter = studentRecruiter;
+         this.departmentRepository = departmentRepository;
+         this.studentRepository = studentRepository;
          this.backgroundJobClient = backgroundJobClient;
       }
 
       [HttpGet(nameof(GetStudentClones))]
       public Task<IEnumerable<Student>> GetStudentClones()
       {
-         return studentRecruiter.GetStudentClonesAsync();
+         return studentRepository.GetStudentClonesAsync();
       }
 
       [HttpGet(nameof(GetClonedDepartments))]
       public Task<IEnumerable<Department>> GetClonedDepartments()
       {
-         return studentRecruiter.GetClonedDepartmentsAsync();
+         return departmentRepository.GetClonedDepartmentsAsync();
       }
 
       [HttpPost(nameof(RecruitStudentClones))]
       public Task RecruitStudentClones([FromBody] int target)
       {
-         return studentRecruiter.RecruitClonesAsync(target);
+         return studentRepository.RecruitClonesAsync(target);
       }
 
       [HttpPost(nameof(ClonesDepartmentsWithBackgroundJob))]
       public void ClonesDepartmentsWithBackgroundJob([FromBody] int target)
       {
-         backgroundJobClient.Enqueue(() => studentRecruiter.ClonesDepartmentsAsync(target));
+         backgroundJobClient.Enqueue(() => departmentRepository.ClonesDepartmentsAsync(target));
       }
 
       [HttpPost(nameof(RemoveStudentClones))]
       public Task RemoveStudentClones()
       {
-         return studentRecruiter.RemoveStudentClonesAsync();
+         return studentRepository.RemoveStudentClonesAsync();
       }
 
       [HttpPost(nameof(RemoveDepartmentClonesWithBackgroundJob))]
       public void RemoveDepartmentClonesWithBackgroundJob()
       {
-         backgroundJobClient.Enqueue(() => studentRecruiter.RemoveDepartmentClonesAsync());
+         backgroundJobClient.Enqueue(() => departmentRepository.RemoveDepartmentClonesAsync());
       }
 
    }

@@ -40,6 +40,9 @@ namespace StackifyExample4
             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), o => o.EnableRetryOnFailure());
          });
          services.AddTransient<StudentRecruiter>();
+         services.AddSingleton<DapperContext>();
+         services.AddScoped<DepartmentRepository>();
+         services.AddScoped<StudentRepository>();
 
          // Add Hangfire services.
          services.AddHangfire(configuration => configuration
